@@ -16,7 +16,7 @@ class InfoBoxEditor(wx.Frame):
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.grid, 1, wx.EXPAND, 5)
         panel.SetSizer(sizer)
-        self.grid.Bind(wx.grid.EVT_GRID_CELL_CHANGE,self.OnCellChange)
+        self.grid.Bind(wx.grid.EVT_GRID_CELL_CHANGED,self.OnCellChange)
         self.Bind(wx.EVT_CLOSE,self.OnClose)
 
     def OnClose(self,event):
