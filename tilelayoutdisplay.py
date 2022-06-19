@@ -279,7 +279,7 @@ class TileLayoutDisplay(wx.Frame):
         if self.patioLayoutArray!=0 and len(self.patioLayoutArray)>0:
             patioHeight=len(self.patioLayoutArray)
             patioWidth=len(self.patioLayoutArray[0])
-            dc.SetBrush(wx.Brush(wx.Color(255,255,255,255)))
+            dc.SetBrush(wx.Brush(wx.Colour(255,255,255,255)))
             dc.DrawRectangle(0,0,w,h)
             h=(h*9)/10
             if patioWidth *h > w * patioHeight:
@@ -295,9 +295,9 @@ class TileLayoutDisplay(wx.Frame):
                     tileType=-1
                     dc.SetPen(wx.TRANSPARENT_PEN)
                     if slabValue==-1:
-                        dc.SetBrush(wx.Brush(wx.Color(128,128,128,255)))
+                        dc.SetBrush(wx.Brush(wx.Colour(128,128,128,255)))
                     elif slabValue==0:
-                        dc.SetBrush(wx.Brush(wx.Color(0,0,0,255)))
+                        dc.SetBrush(wx.Brush(wx.Colour(0,0,0,255)))
                     else:
                         tileColours=[(255,0,0),(255,255,0),(0,255,0),(0,255,255),(0,0,255),(255,0,255)]
                         tileType=slabValue/100
@@ -309,7 +309,7 @@ class TileLayoutDisplay(wx.Frame):
                         if self.showSingleColour:
                             colour=(128,200,128)
                         
-                        dc.SetBrush(wx.Brush(wx.Color(colour[0],colour[1],colour[2],255)))
+                        dc.SetBrush(wx.Brush(wx.Colour(colour[0],colour[1],colour[2],255)))
                     dc.DrawRectangle((x*w)/patioWidth,(y*h)/patioHeight,((x+1)*w)/patioWidth - (x*w)/patioWidth,((y+1)*h)/patioHeight-(y*h)/patioHeight)
             # output = list of tuples: each one being:(tileType,tileWidth,tileHeight,tileX,tileY)
             if self.slabList!=0:
@@ -353,7 +353,7 @@ class TileLayoutDisplay(wx.Frame):
                     adjustH=(adjustH*h)/patioHeight
                     (tw,th)=dc.GetTextExtent(text)
                     dc.DrawRectangle(adjustX,adjustY,adjustW,adjustH)
-                    dc.SetTextForeground(wx.Color(255,255,255,255))
+                    dc.SetTextForeground(wx.Colour(255,255,255,255))
                     dc.DrawText(text,adjustX+adjustW/2-tw/2,adjustY+adjustH/2-th/2)
             if self.showInstructions==True:
                 instructions=[
@@ -372,10 +372,10 @@ class TileLayoutDisplay(wx.Frame):
                 for line in instructions:
                     (lineWid,lineHeight)=dc.GetTextExtent(line[1]+" "+line[0])
                     yPos-=lineHeight
-                    dc.SetTextForeground(wx.Color(0,0,0,255))
+                    dc.SetTextForeground(wx.Colour(0,0,0,255))
                     dc.DrawText(line[1],origW-lineWid,yPos)
                     (lineWid,lineHeight)=dc.GetTextExtent(line[0])
-                    dc.SetTextForeground(wx.Color(255,0,0,255))
+                    dc.SetTextForeground(wx.Colour(255,0,0,255))
                     dc.DrawText(line[0],origW-lineWid,yPos)
 
 
