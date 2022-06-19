@@ -144,7 +144,7 @@ class TileLayoutDisplay(wx.Frame):
 
     def OnToggleFullscreen(self,evt):
         self.fullscreen=not self.fullscreen
-        self.mFullscreenMenuItem.Check(self.fullscreen)
+        self.mFullScreenMenuItem.Check(self.fullscreen)
         self.ShowFullScreen(self.fullscreen)
         
     def OnRelayoutSlabs(self,evt):
