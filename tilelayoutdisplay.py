@@ -310,7 +310,7 @@ class TileLayoutDisplay(wx.Frame):
                             colour=(128,200,128)
                         
                         dc.SetBrush(wx.Brush(wx.Colour(colour[0],colour[1],colour[2],255)))
-                    dc.DrawRectangle((x*w)/patioWidth,(y*h)/patioHeight,((x+1)*w)/patioWidth - (x*w)/patioWidth,((y+1)*h)/patioHeight-(y*h)/patioHeight)
+                    dc.DrawRectangle(int((x*w)/patioWidth),int((y*h)/patioHeight),int(((x+1)*w)/patioWidth - (x*w)/patioWidth),int(((y+1)*h)/patioHeight-(y*h)/patioHeight))
             # output = list of tuples: each one being:(tileType,tileWidth,tileHeight,tileX,tileY)
             if self.slabList!=0:
                 for slab in self.slabList:
@@ -321,7 +321,7 @@ class TileLayoutDisplay(wx.Frame):
                     slabW=slab[1]
                     slabH=slab[2]
                     slabType=slab[0]
-                    dc.DrawRectangle((slabX*w)/patioWidth,(slabY*h)/patioHeight,((slabX+slabW)*w)/patioWidth - (slabX*w)/patioWidth,((slabY+slabH)*h)/patioHeight-(slabY*h)/patioHeight)
+                    dc.DrawRectangle(int((slabX*w)/patioWidth),int((slabY*h)/patioHeight),int(((slabX+slabW)*w)/patioWidth - (slabX*w)/patioWidth),int(((slabY+slabH)*h)/patioHeight-(slabY*h)/patioHeight))
                     numSlabs[slabType]+=1
                     if not self.showSingleColour:
                         label="%d"%(slabType+1)
