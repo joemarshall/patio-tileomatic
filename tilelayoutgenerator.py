@@ -87,7 +87,7 @@ class TileLayoutGenerator:
                             priorities[priority].append(index)
                         else:
                             priorities[priority]=[index]
-                    priorityNums=priorities.keys()
+                    priorityNums=list(priorities.keys())
                     priorityNums.sort()
                     tileTryOrder=[]
                     for c in priorityNums:

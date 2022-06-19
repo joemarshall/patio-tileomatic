@@ -97,7 +97,7 @@ class TileLayoutDisplay(wx.Frame):
             self.loadLayout("default.slb")
             self.resetPatioLayout()
         except Exception as e:
-            print "No default layout"
+            print("No default layout")
 
     def OnAbout(self,evt):
         dlg = wx.MessageDialog(self, 'Patio Tile-o-matic 1.0 (C)Joe Marshall 2011', 'About Tile Layout', wx.OK)
@@ -382,7 +382,7 @@ class TileLayoutDisplay(wx.Frame):
 
                 
     def savePNG(self,filename):
-        print "Save png to %s"%filename
+        print("Save png to %s"%filename)
         w,h=self.GetClientSize()
         bitmap=wx.EmptyBitmap(w,h)
         dc = wx.MemoryDC()
@@ -392,7 +392,7 @@ class TileLayoutDisplay(wx.Frame):
         bitmap.SaveFile(filename,wx.BITMAP_TYPE_PNG)
         
     def saveLayout(self,filename):
-        print "Save layout to %s"%filename
+        print("Save layout to %s"%filename)
         filehandler = open(filename, 'w') 
         pickle.dump(self.patioLayoutArray, filehandler) 
         pickle.dump(self.slabList, filehandler) 
