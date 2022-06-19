@@ -300,7 +300,7 @@ class TileLayoutDisplay(wx.Frame):
                         dc.SetBrush(wx.Brush(wx.Colour(0,0,0,255)))
                     else:
                         tileColours=[(255,0,0),(255,255,0),(0,255,0),(0,255,255),(0,0,255),(255,0,255)]
-                        tileType=slabValue/100
+                        tileType=int(slabValue/100)
                         tileType=tileType-1
                         if tileType>=0 and tileType<len(tileColours):
                             colour=tileColours[tileType]
@@ -333,7 +333,7 @@ class TileLayoutDisplay(wx.Frame):
                         xPos-=labelSize[0]/2
                         yPos-=labelSize[1]/2
                         #print "%s %d %d"%(label,xPos,yPos)
-                        dc.DrawText(label,xPos,yPos)
+                        dc.DrawText(label,int(xPos),int(yPos))
             dc.SetPen(wx.GREY_PEN)
             dc.SetFont(wx.Font(wx.Size(int(h/(patioHeight*4)),int(h/(patioHeight*3))),wx.FONTFAMILY_SWISS,wx.FONTSTYLE_NORMAL,wx.FONTWEIGHT_BOLD))
             if len(self.fileLabel)>0:
@@ -411,7 +411,7 @@ class TileLayoutDisplay(wx.Frame):
 
     def generateSlabLayout(self):
         dlg=wx.ProgressDialog("Layout Slabs","",parent=self,style=wx.PD_CAN_ABORT)
-        dlg.UpdatePulse("")
+        dlg.Pulse("")
         
         self.fileLabel=""
         tg = TileLayoutGenerator(self.slabTypes,self.constraintArray)
@@ -431,7 +431,7 @@ class TileLayoutDisplay(wx.Frame):
                         bUsedAll=False
             layoutCount=layoutCount+1
             if layoutCount%25==0:
-                (cont,temp)=dlg.UpdatePulse("Trying layouts: %d"%layoutCount)
+                (cont,temp)=dlg.Pulse("Trying layouts: %d"%layoutCount)
                 if cont==False:
                     break
             if layoutCount==10000:
