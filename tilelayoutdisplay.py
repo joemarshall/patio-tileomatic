@@ -176,7 +176,7 @@ class TileLayoutDisplay(wx.Frame):
         self.Refresh(False)
 
     def OnLoad(self,evt):
-        dialog = wx.FileDialog ( self, "Open Slab Layout",wildcard="*.slb",style = wx.OPEN )
+        dialog = wx.FileDialog ( self, "Open Slab Layout",wildcard="*.slb",style = wx.FD_OPEN )
         if dialog.ShowModal() == wx.ID_OK:
             self.loadLayout(dialog.GetPath())
             self.fileLabel=dialog.GetFilename()
@@ -406,8 +406,8 @@ class TileLayoutDisplay(wx.Frame):
         self.patioLayoutArray=pickle.load(filehandler) 
         self.slabList=pickle.load( filehandler) 
         self.slabTypes=pickle.load( filehandler) 
-        self.informationBoxes=pickle.load( filehandler)
-        self.constraintArray=pickle.load(filehandler)
+        #self.informationBoxes=pickle.load( filehandler)
+        #self.constraintArray=pickle.load(filehandler)
 
     def generateSlabLayout(self):
         dlg=wx.ProgressDialog("Layout Slabs","",parent=self,style=wx.PD_CAN_ABORT)
