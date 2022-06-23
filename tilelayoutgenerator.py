@@ -50,16 +50,17 @@ class TileLayoutGenerator:
             numTiles=numTiles+c
 
         print("entering generateRandomLayout :52")
-        while finished==False:
-            print("in main while loop")
+        rob_counter=0;
+        while finished==False and rob_counter < 10000:
+            #print("in main while loop")
             # first find the list of empty places
             possibleSpaces=[]
             for x in range(0,len(spaceArray[minLine])):
-                print("finding possible spaces")
+                #print("finding possible spaces")
                 if spaceArray[minLine][x]==-1:
                     possibleSpaces.append(x)
             if len(possibleSpaces)==0:
-                print("len possiblespaces is 0")
+                #print("len possiblespaces is 0")
                 minLine+=1
                 if minLine>=len(spaceArray):
                     finished=True
@@ -67,7 +68,7 @@ class TileLayoutGenerator:
                 random.shuffle(possibleSpaces)
                 # now find a tile to put in
                 # if we are on line 0, then put in anything at random to lay an edge course
-                print("finding a file to put in")
+                #print("finding a file to put in")
                 if minLine==0:
                     print("minLine == 0")
                     randomSample=random.randrange(0,numTiles)
@@ -79,13 +80,13 @@ class TileLayoutGenerator:
                     # we've got a tile of type c
                     orientation=random.randrange(0,2)
                     if self.tryFitTile(possibleSpaces,spaceArray,layoutList,minLine,curTile,orientation,numTiles,allowOverlap,maxLineLength)!=-1:
-                        print("tryFitTile Succeeded")
+                        #print("tryFitTile Succeeded")
                         tilesLeft[curTile]=tilesLeft[curTile]-1
                         numTiles-=1
-                    else:
-                        print("tryFitTile failed I think?")
+                    #else:
+                        #print("tryFitTile failed I think?")
                 else:
-                    print("minLine != 0")
+                    #print("minLine != 0")
                     # on lower courses try big tiles first, try wide way round first
                     fittedTile=False
                     
@@ -112,25 +113,27 @@ class TileLayoutGenerator:
                                     tilesLeft[curTile]=tilesLeft[curTile]-1
                                     numTiles-=1
                                     fittedTile=True
-                                    print("fitted tile")
+                                    #print("fitted tile")
                     if not fittedTile:
-                        print("did not fit a tile")
+                        #print("did not fit a tile")
                         if allowOverlap==True:
                             finished=True
                         elif self.constraints['bottomOverlap']==True:
                             allowOverlap=True
                         else:
                             finished=True
-                            print("force finished")
+                            #print("force finished")
                 if numTiles==0:
                     finished=True
+            rob_counter = rob_counter + 1
+
 #        for line in spaceArray:
 #            for tileVal in line:
 #                print "%3d"%tileVal,
 #            print ""
 #        print minLine
 
-        print("exiting generateRandomLayout :212")
+        #print("exiting generateRandomLayout :212")
         return layoutList
         
     def tryFitTile(self,possibleSpaces,spaceArray,layoutList,minLine,curTile,orientation,numTiles,allowOverlap,maxLineLength):
@@ -152,6 +155,17 @@ class TileLayoutGenerator:
                                 tileFits=False
                         elif allowOverlap==False:
                             tileFits=False
+                #check we're not going to leave a gap smaller than the smallest tile we have
+                smallestTile = 2;
+
+                #spaceArray[y][x]=(100*(curTile+1))+numTiles
+                # tileWidth
+                # tileHeight
+                # number of contiuous
+                if self.sizeOfContiguousGaps(spaceArray, minLine, x, "left") < smallestTile \
+                        or self.sizeOfContiguousGaps(spaceArray, minLine+tileWidth, x, "right") < smallestTile:
+                    tileFits=False
+
                 # check that it isn't going to create 4 corners together - ie. that there aren't two corners above either of our top corners
                 if self.constraints['crossConstraint']==True:
                     if tileFits==True and minLine!=0:
@@ -176,7 +190,29 @@ class TileLayoutGenerator:
                 for y in range(minLine,min(len(spaceArray),minLine+tileHeight)):
                     spaceArray[y][x]=(100*(curTile+1))+numTiles
         return foundPos
-        
+
+
+    def sizeOfContiguousGaps(self,spaceArray,x,y,direction):
+        number=0
+        if direction=="left":
+            tile_x = x-1
+            while tile_x > 0:
+                if spaceArray[tile_x][y] == -1:
+                    number=number+1
+                else:
+                    break
+                tile_x = tile_x-1
+        elif direction == "right":
+            tile_x = x + 1
+            while tile_x < len(spaceArray):
+                if spaceArray[tile_x][y] == -1:
+                    number = number + 1
+                else:
+                    break
+                tile_x = tile_x + 1
+
+        return number
+
     # a point is a bottom left corner if 
     #   a)the space below it isn't the same block
     #   b)the space to the left of it is a different block
