@@ -11,7 +11,7 @@ class PatioShapeEditor(wx.Frame):
         self.patioLayout=[]
         self.patioButtons=[]
         self.panel = wx.Panel ( self, -1 )
-        vBox = wx.BoxSizer(wx.VERTICAL )
+        vBox = wx.BoxSizer(wx.VERTICAL)
         hBox=wx.BoxSizer(wx.HORIZONTAL)
         self.widthControl=wx.SpinCtrl(self.panel)
         self.heightControl=wx.SpinCtrl(self.panel)
@@ -110,29 +110,3 @@ class PatioShapeEditor(wx.Frame):
     def OnChange(self):
         if self.callback!=0:
             self.callback.OnPatioShapeChange(self.patioLayout)
-
-        
-#class MyApp(wx.App):
-#
-#    def OnPatioShapeChange(self, layout):
-#        print"layoutchange"
-#        
-#    def OnPatioEditorClosed(self):
-#        print "editorClose"
-#    # wxWindows calls this method to initialize the application
-#    def OnInit(self):#
-
-#        # Create an instance of our customized Frame class
-#        frame = PatioShapeEditor(None, -1,self)
-#        frame.Show(True)       
-        # Tell wxWindows that this is our main window
-#        self.SetTopWindow(frame)
-
-        
-        
-        # Return a success flag
- #       return True
-
-#app = MyApp(0)     # Create an instance of the application class
-#app.MainLoop()     # Tell it to start processing events
-#exit(0)
