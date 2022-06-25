@@ -71,7 +71,7 @@ class TileLayoutGenerator:
                 # if we are on line 0, then put in anything at random to lay an edge course
                 #print("finding a file to put in")
                 if minLine==0:
-                    print("minLine == 0")
+                    #print("minLine == 0")
                     randomSample=random.randrange(0,numTiles)
                     curTile=0
                     for c in tilesLeft:
@@ -159,7 +159,8 @@ class TileLayoutGenerator:
 
                 if tileFits == True:
                     gapToTheLeft = self.sizeOfContiguousGaps(spaceArray, x, minLine, "left")
-                    gapToTheRight = self.sizeOfContiguousGaps(spaceArray, x+tileWidth, minLine, "right")
+                    rightMostPositionOfNewTile = x+tileWidth-1
+                    gapToTheRight = self.sizeOfContiguousGaps(spaceArray, rightMostPositionOfNewTile, minLine, "right")
                     if (gapToTheLeft > 0 and gapToTheLeft < smallestTile) or gapToTheRight > 0 and gapToTheRight < smallestTile:
                         tileFits=False
 
