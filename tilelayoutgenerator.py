@@ -1,6 +1,5 @@
 import random
 
-
 class TileLayoutGenerator:
     
     # tileSizes: array of 4 tuples with the tile width / heights, and the number of each that is the limit (how many tiles you have). Units used are grid squares (eg with 300mm grid squares 2x3 = 600x900)
@@ -49,6 +48,8 @@ class TileLayoutGenerator:
         for c in tilesLeft:
             numTiles=numTiles+c
 
+        smallestTile = self.getSmallestTile()
+
         print("entering generateRandomLayout :52")
         rob_counter=0;
         while finished==False and rob_counter < 10000:
@@ -79,7 +80,7 @@ class TileLayoutGenerator:
                             curTile=curTile+1
                     # we've got a tile of type c
                     orientation=random.randrange(0,2)
-                    if self.tryFitTile(possibleSpaces,spaceArray,layoutList,minLine,curTile,orientation,numTiles,allowOverlap,maxLineLength)!=-1:
+                    if self.tryFitTile(possibleSpaces,spaceArray,layoutList,minLine,curTile,orientation,numTiles,allowOverlap,maxLineLength,smallestTile)!=-1:
                         #print("tryFitTile Succeeded")
                         tilesLeft[curTile]=tilesLeft[curTile]-1
                         numTiles-=1
@@ -109,7 +110,7 @@ class TileLayoutGenerator:
                     for curTile in tileTryOrder:
                         for orientation in range(0,2):
                             if fittedTile==False and tilesLeft[curTile]>0:
-                                if self.tryFitTile(possibleSpaces,spaceArray,layoutList,minLine,curTile,orientation,numTiles,allowOverlap,maxLineLength)!=-1:                
+                                if self.tryFitTile(possibleSpaces,spaceArray,layoutList,minLine,curTile,orientation,numTiles,allowOverlap,maxLineLength,smallestTile)!=-1:
                                     tilesLeft[curTile]=tilesLeft[curTile]-1
                                     numTiles-=1
                                     fittedTile=True
@@ -136,7 +137,7 @@ class TileLayoutGenerator:
         #print("exiting generateRandomLayout :212")
         return layoutList
         
-    def tryFitTile(self,possibleSpaces,spaceArray,layoutList,minLine,curTile,orientation,numTiles,allowOverlap,maxLineLength):
+    def tryFitTile(self,possibleSpaces,spaceArray,layoutList,minLine,curTile,orientation,numTiles,allowOverlap,maxLineLength,smallestTile):
         if orientation==0:
             tileWidth = self.tileSizes[curTile][0]
             tileHeight = self.tileSizes[curTile][1]
@@ -155,16 +156,12 @@ class TileLayoutGenerator:
                                 tileFits=False
                         elif allowOverlap==False:
                             tileFits=False
-                #check we're not going to leave a gap smaller than the smallest tile we have
-                smallestTile = 2;
 
-                #spaceArray[y][x]=(100*(curTile+1))+numTiles
-                # tileWidth
-                # tileHeight
-                # number of contiuous
-                if self.sizeOfContiguousGaps(spaceArray, minLine, x, "left") < smallestTile \
-                        or self.sizeOfContiguousGaps(spaceArray, minLine+tileWidth, x, "right") < smallestTile:
-                    tileFits=False
+                if tileFits == True:
+                    gapToTheLeft = self.sizeOfContiguousGaps(spaceArray, x, minLine, "left")
+                    gapToTheRight = self.sizeOfContiguousGaps(spaceArray, x+tileWidth, minLine, "right")
+                    if (gapToTheLeft > 0 and gapToTheLeft < smallestTile) or gapToTheRight > 0 and gapToTheRight < smallestTile:
+                        tileFits=False
 
                 # check that it isn't going to create 4 corners together - ie. that there aren't two corners above either of our top corners
                 if self.constraints['crossConstraint']==True:
@@ -196,8 +193,8 @@ class TileLayoutGenerator:
         number=0
         if direction=="left":
             tile_x = x-1
-            while tile_x > 0:
-                if spaceArray[tile_x][y] == -1:
+            while tile_x >= 0:
+                if spaceArray[y][tile_x] == -1:
                     number=number+1
                 else:
                     break
@@ -205,7 +202,7 @@ class TileLayoutGenerator:
         elif direction == "right":
             tile_x = x + 1
             while tile_x < len(spaceArray):
-                if spaceArray[tile_x][y] == -1:
+                if spaceArray[y][tile_x] == -1:
                     number = number + 1
                 else:
                     break
@@ -307,3 +304,12 @@ class TileLayoutGenerator:
             else:
                 break
         return lineCount
+
+    def getSmallestTile(self):
+        smallestDimension = -1
+        for c in self.tileSizes:
+            if(c[0] < smallestDimension or smallestDimension == -1):
+                smallestDimension = c[0]
+            if(c[1] < smallestDimension or smallestDimension == -1):
+                smallestDimension = c[1]
+        return smallestDimension
