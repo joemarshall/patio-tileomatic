@@ -310,7 +310,7 @@ class TileLayoutDisplay(wx.Frame):
                             colour=(128,200,128)
                         
                         dc.SetBrush(wx.Brush(wx.Colour(colour[0],colour[1],colour[2],255)))
-                    dc.DrawRectangle(int((x*w)/patioWidth),int((y*h)/patioHeight),int(((x+1)*w)/patioWidth - (x*w)/patioWidth),int(((y+1)*h)/patioHeight-(y*h)/patioHeight))
+                    dc.DrawRectangle(int((x*w)/patioWidth),int((y*h)/patioHeight),int(((x+1)*w)/patioWidth) - int((x*w)/patioWidth),int(((y+1)*h)/patioHeight)-int((y*h)/patioHeight))
             # output = list of tuples: each one being:(tileType,tileWidth,tileHeight,tileX,tileY)
             if self.slabList!=0:
                 for slab in self.slabList:
