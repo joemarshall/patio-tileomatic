@@ -339,9 +339,12 @@ class TileLayoutDisplay(wx.Frame):
             if len(self.fileLabel)>0:
                 dc.DrawText("file: "+self.fileLabel,0,int(origH-h/(patioHeight*3)))
             if w<origW:
-                dc.DrawText(" Materials List:",int(w),int(h/2))
+                dc.SetTextForeground(wx.Colour(0,0,0,255))
+                dc.DrawText(" Materials List:",origW-75,int(h/2))
                 for idx,c in enumerate(self.slabTypes):
-                    dc.DrawText(" %02d x Type %d : %dx%d Slab"%(numSlabs[idx],idx+1,c[0],c[1]),int(w), int(h/2 + (idx+1) * h/(patioHeight*3)) )
+                    textToDisplay=" %02d x Type %d : %dx%d Slab  "%(numSlabs[idx],idx+1,c[0],c[1])
+                    (lineWidth,lineHeight)=dc.GetTextExtent(textToDisplay)
+                    dc.DrawText(textToDisplay,origW-lineWidth, int(h/2 + (idx+1) * h/(patioHeight*3)) )
             if self.informationBoxes!=0:
                 dc.SetPen(wx.BLACK_DASHED_PEN)
                 dc.SetBrush(wx.TRANSPARENT_BRUSH)
