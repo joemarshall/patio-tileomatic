@@ -406,8 +406,8 @@ class TileLayoutDisplay(wx.Frame):
         self.patioLayoutArray=pickle.load(filehandler) 
         self.slabList=pickle.load( filehandler) 
         self.slabTypes=pickle.load( filehandler) 
-        #self.informationBoxes=pickle.load( filehandler)
-        #self.constraintArray=pickle.load(filehandler)
+        self.informationBoxes=pickle.load( filehandler)
+        self.constraintArray=pickle.load(filehandler)
 
     def generateSlabLayout(self):
         dlg=wx.ProgressDialog("Layout Slabs","",parent=self,style=wx.PD_CAN_ABORT)
