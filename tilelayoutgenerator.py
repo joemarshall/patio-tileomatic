@@ -50,18 +50,15 @@ class TileLayoutGenerator:
 
         smallestTile = self.getSmallestTile()
 
-        print("entering generateRandomLayout :52")
+        #print("entering generateRandomLayout :52")
         rob_counter=0;
-        while finished==False and rob_counter < 10000:
-            #print("in main while loop")
+        while finished==False and rob_counter < 100:
             # first find the list of empty places
             possibleSpaces=[]
             for x in range(0,len(spaceArray[minLine])):
-                #print("finding possible spaces")
                 if spaceArray[minLine][x]==-1:
                     possibleSpaces.append(x)
             if len(possibleSpaces)==0:
-                #print("len possiblespaces is 0")
                 minLine+=1
                 if minLine>=len(spaceArray):
                     finished=True
@@ -69,9 +66,7 @@ class TileLayoutGenerator:
                 random.shuffle(possibleSpaces)
                 # now find a tile to put in
                 # if we are on line 0, then put in anything at random to lay an edge course
-                #print("finding a file to put in")
                 if minLine==0:
-                    #print("minLine == 0")
                     randomSample=random.randrange(0,numTiles)
                     curTile=0
                     for c in tilesLeft:
@@ -80,14 +75,11 @@ class TileLayoutGenerator:
                             curTile=curTile+1
                     # we've got a tile of type c
                     orientation=random.randrange(0,2)
+
                     if self.tryFitTile(possibleSpaces,spaceArray,layoutList,minLine,curTile,orientation,numTiles,allowOverlap,maxLineLength,smallestTile)!=-1:
-                        #print("tryFitTile Succeeded")
                         tilesLeft[curTile]=tilesLeft[curTile]-1
                         numTiles-=1
-                    #else:
-                        #print("tryFitTile failed I think?")
                 else:
-                    #print("minLine != 0")
                     # on lower courses try big tiles first, try wide way round first
                     fittedTile=False
                     
@@ -134,7 +126,6 @@ class TileLayoutGenerator:
 #            print ""
 #        print minLine
 
-        #print("exiting generateRandomLayout :212")
         return layoutList
         
     def tryFitTile(self,possibleSpaces,spaceArray,layoutList,minLine,curTile,orientation,numTiles,allowOverlap,maxLineLength,smallestTile):
@@ -145,6 +136,7 @@ class TileLayoutGenerator:
             tileHeight = self.tileSizes[curTile][0]
             tileWidth = self.tileSizes[curTile][1]
         # now try to fit it in all possible places on the bottom line in random order
+
         foundPos=-1
         for x in possibleSpaces:
             if foundPos==-1 and x+tileWidth<=len(spaceArray[minLine]):

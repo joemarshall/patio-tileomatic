@@ -337,7 +337,7 @@ class TileLayoutDisplay(wx.Frame):
             dc.SetPen(wx.GREY_PEN)
             dc.SetFont(wx.Font(wx.Size(int(h/(patioHeight*4)),int(h/(patioHeight*3))),wx.FONTFAMILY_SWISS,wx.FONTSTYLE_NORMAL,wx.FONTWEIGHT_BOLD))
             if len(self.fileLabel)>0:
-                dc.DrawText("file: "+self.fileLabel,0,origH-h/(patioHeight*3))
+                dc.DrawText("file: "+self.fileLabel,0,int(origH-h/(patioHeight*3)))
             if w<origW:
                 dc.DrawText(" Materials List:",int(w),int(h/2))
                 for idx,c in enumerate(self.slabTypes):
