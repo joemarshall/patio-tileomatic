@@ -97,7 +97,7 @@ class TileLayoutDisplay(wx.Frame):
             self.loadLayout("default.slb")
             self.resetPatioLayout()
         except Exception as e:
-            print "No default layout"
+            print("No default layout")
 
     def OnAbout(self,evt):
         dlg = wx.MessageDialog(self, 'Patio Tile-o-matic 1.0 (C)Joe Marshall 2011', 'About Tile Layout', wx.OK)
@@ -144,7 +144,7 @@ class TileLayoutDisplay(wx.Frame):
 
     def OnToggleFullscreen(self,evt):
         self.fullscreen=not self.fullscreen
-        self.mFullscreenMenuItem.Check(self.fullscreen)
+        self.mFullScreenMenuItem.Check(self.fullscreen)
         self.ShowFullScreen(self.fullscreen)
         
     def OnRelayoutSlabs(self,evt):
@@ -176,7 +176,7 @@ class TileLayoutDisplay(wx.Frame):
         self.Refresh(False)
 
     def OnLoad(self,evt):
-        dialog = wx.FileDialog ( self, "Open Slab Layout",wildcard="*.slb",style = wx.OPEN )
+        dialog = wx.FileDialog ( self, "Open Slab Layout",wildcard="*.slb",style = wx.FD_OPEN )
         if dialog.ShowModal() == wx.ID_OK:
             self.loadLayout(dialog.GetPath())
             self.fileLabel=dialog.GetFilename()
@@ -279,7 +279,7 @@ class TileLayoutDisplay(wx.Frame):
         if self.patioLayoutArray!=0 and len(self.patioLayoutArray)>0:
             patioHeight=len(self.patioLayoutArray)
             patioWidth=len(self.patioLayoutArray[0])
-            dc.SetBrush(wx.Brush(wx.Color(255,255,255,255)))
+            dc.SetBrush(wx.Brush(wx.Colour(255,255,255,255)))
             dc.DrawRectangle(0,0,w,h)
             h=(h*9)/10
             if patioWidth *h > w * patioHeight:
@@ -295,12 +295,12 @@ class TileLayoutDisplay(wx.Frame):
                     tileType=-1
                     dc.SetPen(wx.TRANSPARENT_PEN)
                     if slabValue==-1:
-                        dc.SetBrush(wx.Brush(wx.Color(128,128,128,255)))
+                        dc.SetBrush(wx.Brush(wx.Colour(128,128,128,255)))
                     elif slabValue==0:
-                        dc.SetBrush(wx.Brush(wx.Color(0,0,0,255)))
+                        dc.SetBrush(wx.Brush(wx.Colour(0,0,0,255)))
                     else:
-                        tileColours=[(255,0,0),(255,255,0),(0,255,0),(0,255,255),(0,0,255),(255,0,255)]
-                        tileType=slabValue/100
+                        tileColours=[(244, 154, 36),(248, 187, 109),(250, 210, 158),(116, 70, 86),(158, 96, 117),(201, 122, 148),(189, 160, 12),(237, 201, 15),(7, 117, 101),(101, 7, 117)]
+                        tileType=int(slabValue/100)
                         tileType=tileType-1
                         if tileType>=0 and tileType<len(tileColours):
                             colour=tileColours[tileType]
@@ -309,8 +309,8 @@ class TileLayoutDisplay(wx.Frame):
                         if self.showSingleColour:
                             colour=(128,200,128)
                         
-                        dc.SetBrush(wx.Brush(wx.Color(colour[0],colour[1],colour[2],255)))
-                    dc.DrawRectangle((x*w)/patioWidth,(y*h)/patioHeight,((x+1)*w)/patioWidth - (x*w)/patioWidth,((y+1)*h)/patioHeight-(y*h)/patioHeight)
+                        dc.SetBrush(wx.Brush(wx.Colour(colour[0],colour[1],colour[2],255)))
+                    dc.DrawRectangle(int((x*w)/patioWidth),int((y*h)/patioHeight),int(((x+1)*w)/patioWidth) - int((x*w)/patioWidth),int(((y+1)*h)/patioHeight)-int((y*h)/patioHeight))
             # output = list of tuples: each one being:(tileType,tileWidth,tileHeight,tileX,tileY)
             if self.slabList!=0:
                 for slab in self.slabList:
@@ -321,27 +321,30 @@ class TileLayoutDisplay(wx.Frame):
                     slabW=slab[1]
                     slabH=slab[2]
                     slabType=slab[0]
-                    dc.DrawRectangle((slabX*w)/patioWidth,(slabY*h)/patioHeight,((slabX+slabW)*w)/patioWidth - (slabX*w)/patioWidth,((slabY+slabH)*h)/patioHeight-(slabY*h)/patioHeight)
+                    dc.DrawRectangle(int((slabX*w)/patioWidth),int((slabY*h)/patioHeight),int(((slabX+slabW)*w)/patioWidth - (slabX*w)/patioWidth),int(((slabY+slabH)*h)/patioHeight-(slabY*h)/patioHeight))
                     numSlabs[slabType]+=1
                     if not self.showSingleColour:
                         label="%d"%(slabType+1)
                         dc.SetPen(wx.NullPen)
-                        dc.SetFont(wx.FontFromPixelSize( (h/(patioHeight*4),h/(patioHeight*3)),wx.FONTFAMILY_SWISS,wx.FONTSTYLE_NORMAL,wx.FONTWEIGHT_BOLD))
+                        dc.SetFont(wx.Font(wx.Size(int(h/(patioHeight*4)),int(h/(patioHeight*3))),wx.FONTFAMILY_SWISS,wx.FONTSTYLE_NORMAL,wx.FONTWEIGHT_BOLD))
                         labelSize=dc.GetTextExtent(label)
                         xPos= ((slabX*2+slabW)*w)/(patioWidth*2)
                         yPos= ((2*slabY+slabH)*h)/(patioHeight*2)
                         xPos-=labelSize[0]/2
                         yPos-=labelSize[1]/2
                         #print "%s %d %d"%(label,xPos,yPos)
-                        dc.DrawText(label,xPos,yPos)
+                        dc.DrawText(label,int(xPos),int(yPos))
             dc.SetPen(wx.GREY_PEN)
-            dc.SetFont(wx.FontFromPixelSize( (h/(patioHeight*4),h/(patioHeight*3)),wx.FONTFAMILY_SWISS,wx.FONTSTYLE_NORMAL,wx.FONTWEIGHT_BOLD))
+            dc.SetFont(wx.Font(wx.Size(int(h/(patioHeight*4)),int(h/(patioHeight*3))),wx.FONTFAMILY_SWISS,wx.FONTSTYLE_NORMAL,wx.FONTWEIGHT_BOLD))
             if len(self.fileLabel)>0:
-                dc.DrawText("file: "+self.fileLabel,0,origH-h/(patioHeight*3))
+                dc.DrawText("file: "+self.fileLabel,0,int(origH-h/(patioHeight*3)))
             if w<origW:
-                dc.DrawText(" Materials List:",w,h/2)
+                dc.SetTextForeground(wx.Colour(0,0,0,255))
+                dc.DrawText(" Materials List:",origW-100,int(h/2))
                 for idx,c in enumerate(self.slabTypes):
-                    dc.DrawText(" %02d x Type %d : %dx%d Slab"%(numSlabs[idx],idx+1,c[0],c[1]),w,h/2 + (idx+1) * h/(patioHeight*3))
+                    textToDisplay=" %02d x Type %d : %dx%d Slab  "%(numSlabs[idx],idx+1,c[0],c[1])
+                    (lineWidth,lineHeight)=dc.GetTextExtent(textToDisplay)
+                    dc.DrawText(textToDisplay,origW-lineWidth, int(h/2 + (idx+1) * h/(patioHeight*3)) )
             if self.informationBoxes!=0:
                 dc.SetPen(wx.BLACK_DASHED_PEN)
                 dc.SetBrush(wx.TRANSPARENT_BRUSH)
@@ -352,9 +355,9 @@ class TileLayoutDisplay(wx.Frame):
                     adjustW=(adjustW*w)/patioWidth
                     adjustH=(adjustH*h)/patioHeight
                     (tw,th)=dc.GetTextExtent(text)
-                    dc.DrawRectangle(adjustX,adjustY,adjustW,adjustH)
-                    dc.SetTextForeground(wx.Color(255,255,255,255))
-                    dc.DrawText(text,adjustX+adjustW/2-tw/2,adjustY+adjustH/2-th/2)
+                    dc.DrawRectangle(int(adjustX),int(adjustY),int(adjustW),int(adjustH))
+                    dc.SetTextForeground(wx.Colour(255,255,255,255))
+                    dc.DrawText(text,int(adjustX+adjustW/2-tw/2),int(adjustY+adjustH/2-th/2))
             if self.showInstructions==True:
                 instructions=[
                     ("Q","Quit"),
@@ -372,17 +375,17 @@ class TileLayoutDisplay(wx.Frame):
                 for line in instructions:
                     (lineWid,lineHeight)=dc.GetTextExtent(line[1]+" "+line[0])
                     yPos-=lineHeight
-                    dc.SetTextForeground(wx.Color(0,0,0,255))
+                    dc.SetTextForeground(wx.Colour(0,0,0,255))
                     dc.DrawText(line[1],origW-lineWid,yPos)
                     (lineWid,lineHeight)=dc.GetTextExtent(line[0])
-                    dc.SetTextForeground(wx.Color(255,0,0,255))
+                    dc.SetTextForeground(wx.Colour(255,0,0,255))
                     dc.DrawText(line[0],origW-lineWid,yPos)
 
 
 
                 
     def savePNG(self,filename):
-        print "Save png to %s"%filename
+        print("Save png to %s"%filename)
         w,h=self.GetClientSize()
         bitmap=wx.EmptyBitmap(w,h)
         dc = wx.MemoryDC()
@@ -392,8 +395,8 @@ class TileLayoutDisplay(wx.Frame):
         bitmap.SaveFile(filename,wx.BITMAP_TYPE_PNG)
         
     def saveLayout(self,filename):
-        print "Save layout to %s"%filename
-        filehandler = open(filename, 'w') 
+        print("Save layout to %s"%filename)
+        filehandler = open(filename, 'wb') 
         pickle.dump(self.patioLayoutArray, filehandler) 
         pickle.dump(self.slabList, filehandler) 
         pickle.dump(self.slabTypes, filehandler) 
@@ -402,7 +405,7 @@ class TileLayoutDisplay(wx.Frame):
 
 
     def loadLayout(self,filename):
-        filehandler = open(filename, 'r') 
+        filehandler = open(filename, 'rb') 
         self.patioLayoutArray=pickle.load(filehandler) 
         self.slabList=pickle.load( filehandler) 
         self.slabTypes=pickle.load( filehandler) 
@@ -411,7 +414,7 @@ class TileLayoutDisplay(wx.Frame):
 
     def generateSlabLayout(self):
         dlg=wx.ProgressDialog("Layout Slabs","",parent=self,style=wx.PD_CAN_ABORT)
-        dlg.UpdatePulse("")
+        dlg.Pulse("")
         
         self.fileLabel=""
         tg = TileLayoutGenerator(self.slabTypes,self.constraintArray)
@@ -431,7 +434,7 @@ class TileLayoutDisplay(wx.Frame):
                         bUsedAll=False
             layoutCount=layoutCount+1
             if layoutCount%25==0:
-                (cont,temp)=dlg.UpdatePulse("Trying layouts: %d"%layoutCount)
+                (cont,temp)=dlg.Pulse("Trying layouts: %d"%layoutCount)
                 if cont==False:
                     break
             if layoutCount==10000:
