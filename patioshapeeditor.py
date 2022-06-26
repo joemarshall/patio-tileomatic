@@ -23,8 +23,8 @@ class PatioShapeEditor(wx.Frame):
         self.vBox=vBox
         self.panel.SetSizerAndFit ( vBox )
         self.SetGridSize(10,10)
-        self.widthControl.Bind(wx.EVT_SPIN,self.OnWidthChange)
-        self.heightControl.Bind(wx.EVT_SPIN,self.OnHeightChange)
+        self.widthControl.Bind(wx.EVT_SPINCTRL,self.OnWidthChange)
+        self.heightControl.Bind(wx.EVT_SPINCTRL,self.OnHeightChange)
         groundLayout=\
             [\
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],\
