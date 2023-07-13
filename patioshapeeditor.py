@@ -11,7 +11,7 @@ class PatioShapeEditor(wx.Frame):
         self.patioLayout=[]
         self.patioButtons=[]
         self.panel = wx.Panel ( self, -1 )
-        vBox = wx.BoxSizer(wx.VERTICAL )
+        vBox = wx.BoxSizer(wx.VERTICAL)
         hBox=wx.BoxSizer(wx.HORIZONTAL)
         self.widthControl=wx.SpinCtrl(self.panel)
         self.heightControl=wx.SpinCtrl(self.panel)
@@ -23,8 +23,8 @@ class PatioShapeEditor(wx.Frame):
         self.vBox=vBox
         self.panel.SetSizerAndFit ( vBox )
         self.SetGridSize(10,10)
-        self.widthControl.Bind(wx.EVT_SPIN,self.OnWidthChange)
-        self.heightControl.Bind(wx.EVT_SPIN,self.OnHeightChange)
+        self.widthControl.Bind(wx.EVT_SPINCTRL,self.OnWidthChange)
+        self.heightControl.Bind(wx.EVT_SPINCTRL,self.OnHeightChange)
         groundLayout=\
             [\
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],\
@@ -59,10 +59,10 @@ class PatioShapeEditor(wx.Frame):
     def OnGridButtonClicked(self,x,y,event):
         if self.patioLayout[y][x]==0:
             self.patioLayout[y][x]=-1
-            self.patioButtons[y][x].SetBackgroundColour(wx.Color(255,255,255,255))
+            self.patioButtons[y][x].SetBackgroundColour(wx.Colour(255,255,255,255))
         else:
             self.patioLayout[y][x]=0
-            self.patioButtons[y][x].SetBackgroundColour(wx.Color(0,0,0,255))
+            self.patioButtons[y][x].SetBackgroundColour(wx.Colour(0,0,0,255))
         self.OnChange()
             
 
@@ -80,7 +80,7 @@ class PatioShapeEditor(wx.Frame):
             self.grid.Clear(True)
             self.vBox.Remove(self.grid)
             self.grid=0
-        self.grid=wx.GridSizer(h,w)
+        self.grid=wx.GridSizer(int(w),int(h),0)
         oldPatioLayout=self.patioLayout
         self.patioLayout=[]
         self.patioButtons=[]
@@ -94,9 +94,9 @@ class PatioShapeEditor(wx.Frame):
                 if y<len(oldPatioLayout) and x<len(oldPatioLayout[y]):
                     curValue=oldPatioLayout[y][x]
                 if curValue==0:
-                    checkBox.SetBackgroundColour(wx.Color(0,0,0,255))
+                    checkBox.SetBackgroundColour(wx.Colour(0,0,0,255))
                 else:
-                    checkBox.SetBackgroundColour(wx.Color(255,255,255,255))
+                    checkBox.SetBackgroundColour(wx.Colour(255,255,255,255))
                 checkBox.Bind(wx.EVT_BUTTON,functools.partial(self.OnGridButtonClicked,x,y))
                 self.patioLayout[y].append(curValue)
                 self.patioButtons[y].append(checkBox)
@@ -110,29 +110,3 @@ class PatioShapeEditor(wx.Frame):
     def OnChange(self):
         if self.callback!=0:
             self.callback.OnPatioShapeChange(self.patioLayout)
-
-        
-#class MyApp(wx.App):
-#
-#    def OnPatioShapeChange(self, layout):
-#        print"layoutchange"
-#        
-#    def OnPatioEditorClosed(self):
-#        print "editorClose"
-#    # wxWindows calls this method to initialize the application
-#    def OnInit(self):#
-
-#        # Create an instance of our customized Frame class
-#        frame = PatioShapeEditor(None, -1,self)
-#        frame.Show(True)       
-        # Tell wxWindows that this is our main window
-#        self.SetTopWindow(frame)
-
-        
-        
-        # Return a success flag
- #       return True
-
-#app = MyApp(0)     # Create an instance of the application class
-#app.MainLoop()     # Tell it to start processing events
-#exit(0)
